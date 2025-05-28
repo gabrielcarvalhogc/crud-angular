@@ -5,8 +5,4 @@
     {{ isDark ? 'Dark' : 'Light' }}
   </mat-slide-toggle>
 </mat-toolbar>
-
-<div class="content">
-  <h1>Modo {{ isDark ? 'Escuro' : 'Claro' }}</h1>
-  <p>Exemplo usando Angular Material 19.2</p>
-</div>
+<router-outlet></router-outlet>
