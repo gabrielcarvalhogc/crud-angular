@@ -83,7 +83,10 @@
         },
         "test": {
           "builder": "@angular-builders/jest:run",
-          "options": {}
+          "options": {
+            "watch": true,
+            "configPath": "jest.config.js"
+          }
         }
       }
     }
