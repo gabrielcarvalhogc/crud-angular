@@ -3,6 +3,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Course } from './model/course';
+import { CoursesService } from '../../services/courses.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -12,10 +14,10 @@ import { Course } from './model/course';
   styleUrl: './courses.component.scss'
 })
 export class CoursesComponent {
-  constructor() {
-    this.courses = [ {_id: '1', name: 'Angular Basics', category: 'Frontend' },];
+  constructor(private coursesService: CoursesService) {
+    this.courses = this.coursesService.list();
   }
 
-  courses: Course[];
+  courses: Observable<Course[]>;
   displayedColumns = ['name', 'category'];
 }
