@@ -1,3 +1,10 @@
 [
-  { "_id": "1", "name": "Angular", "category": "Front-end" }
+  { "_id": 1, "name": "Angular", "category": "Front-end" },
+  { "_id": 2, "name": "React", "category": "Front-end" },
+  { "_id": 3, "name": "Vue.js", "category": "Front-end" },
+  { "_id": 4, "name": "Node.js", "category": "Back-end" },
+  { "_id": 5, "name": "Express.js", "category": "Back-end" },
+  { "_id": 6, "name": "Django", "category": "Back-end" },
+  { "_id": 7, "name": "Flask", "category": "Back-end" },
+  { "_id": 8, "name": ".NET Core", "category": "Back-end" }
 ]

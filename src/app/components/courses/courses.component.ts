@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class CoursesComponent {
   constructor(private coursesService: CoursesService) {
-    this.courses = this.coursesService.list();
+    this.courses = this.coursesService.getList();
   }
 
   courses: Observable<Course[]>;

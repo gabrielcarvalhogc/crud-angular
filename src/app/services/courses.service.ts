@@ -13,7 +13,7 @@ export class CoursesService {
   constructor(private http: HttpClient) {
 
   }
-  list() {
+  getList() {
     return this.http.get<Course[]>(this.API)
       .pipe(
         first(),

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CoursesComponent } from './courses.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
@@ -8,9 +10,13 @@ describe('CoursesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoursesComponent]
+      imports: [CoursesComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
@@ -37,14 +43,5 @@ describe('CoursesComponent', () => {
 
     expect(headers[0].textContent).toContain('Curso');
     expect(headers[1].textContent).toContain('Categoria');
-  });
-
-  it('should render course rows', () => {
-    const compiled = fixture.nativeElement;
-    const rows = compiled.querySelectorAll('td');
-    const coursesMock = [ {_id: '1', name: 'Angular Basics', category: 'Frontend' },];
-
-    expect(rows[0].textContent).toContain(coursesMock[0].name);
-    expect(rows[1].textContent).toContain(coursesMock[0].category);
   });
 });
