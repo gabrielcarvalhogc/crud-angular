@@ -3,10 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesComponent } from './courses.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Course } from './model/course';
+import { By } from '@angular/platform-browser';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
+  const coursesSubject = new BehaviorSubject<Course[]>([]);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +24,10 @@ describe('CoursesComponent', () => {
 
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
+
+    component.courses$ = coursesSubject.asObservable();
+    component.displayedColumns = ['name', 'category'];
+
     fixture.detectChanges();
   });
 
@@ -38,10 +46,18 @@ describe('CoursesComponent', () => {
   });
 
   it('should render course collun headers', () => {
-    const compiled = fixture.nativeElement;
-    const headers = compiled.querySelectorAll('th');
+    coursesSubject.next([
+      { _id: 1, name: 'Angular Basics', category: 'Frontend' },
+      { _id: 2, name: 'Node.js', category: 'Backend' }
+    ]);
 
-    expect(headers[0].textContent).toContain('Curso');
-    expect(headers[1].textContent).toContain('Categoria');
+    fixture.detectChanges();
+
+    const headerCells = fixture.debugElement.queryAll(By.css('th'));
+
+    expect(headerCells.length).toBe(2);
+
+    expect(headerCells[0].nativeElement.textContent.trim()).toBe('Curso');
+    expect(headerCells[1].nativeElement.textContent.trim()).toBe('Categoria');
   });
 });
