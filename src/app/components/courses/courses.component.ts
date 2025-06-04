@@ -3,17 +3,27 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { Course } from './model/course';
 import { CoursesService } from '../../services/courses.service';
 import { catchError, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
+import { CategoryPipe } from "../../shared/pipes/category.pipe";
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    CategoryPipe
+  ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
@@ -27,12 +37,12 @@ export class CoursesComponent {
     public dialog: MatDialog
   ) {
     this.courses$ = this.coursesService.getList()
-    .pipe(
-      catchError(error => {
-        this.onError('Erro ao carregar cursos')
-        return of([]);
-      })
-    )
+      .pipe(
+        catchError(error => {
+          this.onError('Erro ao carregar cursos')
+          return of([]);
+        })
+      )
   }
 
   onError(errorMsg: string) {
