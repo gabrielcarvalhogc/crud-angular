@@ -10,9 +10,10 @@ export class CoursesService {
 
   private API = 'courses.json';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+  ) {}
 
-  }
   getList() {
     return this.http.get<Course[]>(this.API)
       .pipe(
