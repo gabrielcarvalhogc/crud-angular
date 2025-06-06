@@ -8,7 +8,8 @@ import { first, tap } from 'rxjs';
 })
 export class CoursesService {
 
-  private API = 'courses.json';
+  //private API = 'courses.json';
+  private API = 'http://localhost:8080/api/courses';
 
   constructor(
     private http: HttpClient,
@@ -21,5 +22,9 @@ export class CoursesService {
         tap(courses => {
           console.log(courses);})
       );
+  }
+
+  save(record: Course) {
+    return this.http.post<Course>(this.API, record);
   }
 }

@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { Course } from './model/course';
 import { CoursesService } from '../../services/courses.service';
 import { catchError, Observable, of } from 'rxjs';
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
 import { CategoryPipe } from "../../shared/pipes/category.pipe";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -22,7 +24,8 @@ import { CategoryPipe } from "../../shared/pipes/category.pipe";
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    CategoryPipe
+    CategoryPipe,
+    MatButtonModule,
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
@@ -30,11 +33,13 @@ import { CategoryPipe } from "../../shared/pipes/category.pipe";
 export class CoursesComponent {
 
   courses$: Observable<Course[]>;
-  displayedColumns = ['name', 'category'];
+  displayedColumns = ['name', 'category', 'actions'];
 
   constructor(
     private coursesService: CoursesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.courses$ = this.coursesService.getList()
       .pipe(
@@ -49,5 +54,9 @@ export class CoursesComponent {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
     })
+  }
+
+  onAdd() {
+    this.router.navigate(['new'], {relativeTo: this.route});
   }
 }
