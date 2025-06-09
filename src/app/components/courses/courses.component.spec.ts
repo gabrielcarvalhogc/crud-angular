@@ -6,6 +6,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Course } from './model/course';
 import { By } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
@@ -14,7 +15,11 @@ describe('CoursesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoursesComponent],
+      imports: [
+        CoursesComponent,
+        RouterModule.forRoot([], {
+          initialNavigation: 'disabled'
+        })],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting()

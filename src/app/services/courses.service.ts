@@ -17,11 +17,6 @@ export class CoursesService {
 
   getList() {
     return this.http.get<Course[]>(this.API)
-      .pipe(
-        first(),
-        tap(courses => {
-          console.log(courses);})
-      );
   }
 
   save(record: Course) {
