@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CoursesService } from '../../services/courses.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-course-form',
@@ -28,27 +29,36 @@ export class CourseFormComponent {
   private _snackBar = inject(MatSnackBar);
   form: FormGroup;
 
-  constructor(formBuilder: FormBuilder, private service: CoursesService) {
+  constructor(
+    formBuilder: FormBuilder,
+    private service: CoursesService,
+    private location: Location
+  ) {
     this.form = formBuilder.group({
       name: [null],
       category: [null]
     })
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
+  openSnackBar(message: string, action: string, config?: { duration?: number }) {
+    this._snackBar.open(message, action, config);
   }
 
   onSubmit() {
     this.service.save(this.form.value)
-    .subscribe({
-      next: (result) => console.log(result),
-      error: () => this.onError()
-    });
+      .subscribe({
+        next: () => this.onSuccess(),
+        error: () => this.onError(),
+        complete: () => this.onCancel()
+      });
   }
 
   onCancel() {
+    this.location.back();
+  }
 
+  private onSuccess() {
+    this.openSnackBar('Curso salvo com sucesso', '', { duration: 3000 });
   }
 
   private onError() {
