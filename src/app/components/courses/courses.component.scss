@@ -1,9 +1,6 @@
-.card {
+mat-card {
   padding: 16px;
-
-  table {
-    width: 90%;
-  }
+  min-width: 300px;
 }
 
 .loading-spinner {

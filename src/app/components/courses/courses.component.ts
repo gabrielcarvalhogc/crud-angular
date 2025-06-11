@@ -1,39 +1,32 @@
 import { Component } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { Course } from './model/course';
 import { CoursesService } from '../../services/courses.service';
 import { catchError, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
-import { CategoryPipe } from "../../shared/pipes/category.pipe";
 import { ActivatedRoute, Router } from '@angular/router';
+import { CoursesListComponent } from "../courses-list/courses-list.component";
 
 @Component({
   selector: 'app-courses',
   standalone: true,
   imports: [
     CommonModule,
-    MatTableModule,
     MatCardModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    MatIconModule,
-    CategoryPipe,
-    MatButtonModule,
-  ],
+    CoursesListComponent
+],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
 export class CoursesComponent {
 
   courses$: Observable<Course[]>;
-  displayedColumns = ['name', 'category', 'actions'];
 
   constructor(
     private coursesService: CoursesService,

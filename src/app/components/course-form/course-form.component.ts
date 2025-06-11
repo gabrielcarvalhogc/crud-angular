@@ -35,8 +35,8 @@ export class CourseFormComponent {
     private location: Location
   ) {
     this.form = formBuilder.group({
-      name: [null],
-      category: [null]
+      name: [''],
+      category: ['']
     })
   }
 
