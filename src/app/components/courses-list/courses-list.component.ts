@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../courses/model/course';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,14 +20,13 @@ import { CategoryPipe } from '../../shared/pipes/category.pipe';
 export class CoursesListComponent {
 
   @Input() courses: Course[] = [];
+  @Output() add = new EventEmitter(false);
+
   displayedColumns = ['name', 'category', 'actions'];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
+  constructor() { }
 
   onAdd() {
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.add.emit(true);
   }
 }

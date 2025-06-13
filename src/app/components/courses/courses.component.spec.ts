@@ -42,4 +42,6 @@ describe('CoursesComponent', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('span').textContent).toContain('Cursos disponíveis');
   });
+
+
 });

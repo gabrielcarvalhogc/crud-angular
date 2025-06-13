@@ -11,12 +11,10 @@ describe('CoursesListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CoursesListComponent,
-        RouterModule.forRoot([], {
-          initialNavigation: 'disabled'
-        }),
+        RouterModule.forRoot([]),
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
@@ -39,4 +37,12 @@ describe('CoursesListComponent', () => {
     expect(headers[0].textContent).toContain('Curso');
     expect(headers[1].textContent).toContain('Categoria');
   });
+
+  //it('should call onAdd when "Adicionar Curso" button is clicked', () => {
+   // const spy = jest.spyOn(component, 'onAdd');
+  //  const button = fixture.debugElement.query(By.css('[data-testid="add-button"]'));
+
+  //  button.nativeElement.click();
+  //  expect(spy).toHaveBeenCalled();
+  //});
 });
