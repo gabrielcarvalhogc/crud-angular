@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CourseFormComponent } from './course-form.component';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -10,6 +10,7 @@ import { CoursesService } from '../../services/courses.service';
 import { By } from '@angular/platform-browser';
 import { EMPTY, of, throwError } from 'rxjs';
 import { Location } from '@angular/common';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 
 describe('CourseFormComponent', () => {
   let component: CourseFormComponent;
@@ -20,13 +21,29 @@ describe('CourseFormComponent', () => {
     mockService = { save: jest.fn() }
 
     await TestBed.configureTestingModule({
-      imports: [CourseFormComponent, NoopAnimationsModule, ReactiveFormsModule, MatSnackBarModule],
+      imports: [
+        CourseFormComponent,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        RouterModule.forRoot([])
+      ],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         FormBuilder,
         { provide: CoursesService, useValue: mockService },
-        { provide: Location, useValue: { back: jest.fn() } }
+        { provide: Location, useValue: { back: jest.fn() } },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              data: {
+                course: { _id: 1, name: 'Test', category: 'TestCat' }
+              }
+            }
+          }
+        }
       ]
     }).compileComponents();
 

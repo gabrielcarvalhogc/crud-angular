@@ -3,28 +3,36 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesComponent } from './courses.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Course } from './model/course';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
+  let router: Router;
+  const mockRouter = {
+    navigate: jest.fn()
+  };
+  const mockActivatedRoute = {} as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         CoursesComponent,
-        RouterModule.forRoot([], {
-          initialNavigation: 'disabled'
-        })],
+        RouterModule.forRoot([])],
       providers: [
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        { provide: Router, useValue: mockRouter },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
+
+    router = TestBed.inject(Router);
 
     fixture.detectChanges();
   });
@@ -43,5 +51,25 @@ describe('CoursesComponent', () => {
     expect(compiled.querySelector('span').textContent).toContain('Cursos disponíveis');
   });
 
+  it('should navigate to the "new" route', () => {
+    component.onAdd();
 
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['new'],
+      { relativeTo: mockActivatedRoute }
+    );
+  });
+
+  it('should navigate to the "edit/:id" route with the course id', () => {
+    const course: Course = { _id: '12', name: 'Angular', category: 'Frint-end' };
+
+    component.onEdit(course);
+
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['edit', course._id],
+      { relativeTo: mockActivatedRoute }
+    );
+  });
 });

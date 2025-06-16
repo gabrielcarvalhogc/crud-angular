@@ -8,6 +8,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CoursesService } from '../../services/courses.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Course } from '../courses/model/course';
 
 @Component({
   selector: 'app-course-form',
@@ -26,18 +28,28 @@ import { Location } from '@angular/common';
 })
 export class CourseFormComponent {
 
-  private _snackBar = inject(MatSnackBar);
+  private readonly _snackBar = inject(MatSnackBar);
   form: FormGroup;
 
   constructor(
     formBuilder: FormBuilder,
-    private service: CoursesService,
-    private location: Location
+    private readonly service: CoursesService,
+    private readonly location: Location,
+    private readonly route: ActivatedRoute
   ) {
     this.form = formBuilder.group({
+      _id: [''],
       name: [''],
       category: ['']
-    })
+    });
+
+    const course: Course = this.route.snapshot.data['course'];
+
+    this.form.setValue({
+      _id: course._id,
+      name: course.name,
+      category: course.category
+    });
   }
 
   openSnackBar(message: string, action: string, config?: { duration?: number }) {

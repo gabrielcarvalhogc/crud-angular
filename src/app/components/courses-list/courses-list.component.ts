@@ -1,5 +1,5 @@
+import { Course } from './../courses/model/course';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Course } from '../courses/model/course';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,7 @@ export class CoursesListComponent {
 
   @Input() courses: Course[] = [];
   @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
 
   displayedColumns = ['name', 'category', 'actions'];
 
@@ -28,5 +29,9 @@ export class CoursesListComponent {
 
   onAdd() {
     this.add.emit(true);
+  }
+
+  onEdit(course: Course) {
+    this.edit.emit(course);
   }
 }
