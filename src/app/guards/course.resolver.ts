@@ -4,9 +4,7 @@ import { inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Course } from '../components/courses/model/course';
 
-export const courseResolver: ResolveFn<Observable<Course>> = (route, state) => {
-
-  const service = inject(CoursesService);
+export const courseResolver: ResolveFn<Observable<Course>> = (route, state, service: CoursesService = inject(CoursesService)) => {
 
   if(route.params['id']) {
     return service.loadById(route.params['id'])

@@ -36,4 +36,8 @@ export class CoursesService {
   private update(record: Course) {
     return this.http.put<Course>(`${this.API}/${record._id}`, record);
   }
+
+  remove(id: string) {
+    return this.http.delete(`${this.API}/${id}`);
+  }
 }

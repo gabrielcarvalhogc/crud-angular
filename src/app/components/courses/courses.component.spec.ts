@@ -15,7 +15,9 @@ describe('CoursesComponent', () => {
   };
   const mockActivatedRoute = {} as ActivatedRoute;
 
+
   beforeEach(async () => {
+
     await TestBed.configureTestingModule({
       imports: [
         CoursesComponent,
@@ -24,7 +26,7 @@ describe('CoursesComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ]
     })
       .compileComponents();
@@ -72,4 +74,14 @@ describe('CoursesComponent', () => {
       { relativeTo: mockActivatedRoute }
     );
   });
+
+  it('should call delete method when onDelete is called', () => {
+    const course: Course = { _id: '12', name: 'Angular', category: 'Front-end' };
+    const deleteSpy = jest.spyOn(component, 'onDelete');
+
+    component.onDelete(course);
+
+    expect(deleteSpy).toHaveBeenCalledWith(course);
+  });
+
 });

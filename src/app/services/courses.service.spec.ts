@@ -98,4 +98,22 @@ describe('CoursesService', () => {
       });
     });
   });
+
+  describe('should call http.delete', () => {
+    it('should call http.delete with right URL', () => {
+      const cursoId = '1';
+      service.remove(cursoId);
+
+      expect(httpClientMock.delete).toHaveBeenCalledWith(`${API_URL}/${cursoId}`);
+    });
+
+    it('should return void on successful deletion', (done) => {
+      httpClientMock.delete.mockReturnValue(of(null));
+
+      service.remove('1').subscribe((resultado) => {
+        expect(resultado).toBeNull();
+        done();
+      });
+    });
+  });
 });

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesListComponent } from "../courses-list/courses-list.component";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-courses',
@@ -19,21 +20,27 @@ import { CoursesListComponent } from "../courses-list/courses-list.component";
     MatCardModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    CoursesListComponent
-],
+    CoursesListComponent,
+    MatSnackBarModule
+  ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
 export class CoursesComponent {
 
-  courses$: Observable<Course[]>;
+  courses$: Observable<Course[]> | null = null;
 
   constructor(
     private readonly coursesService: CoursesService,
     public dialog: MatDialog,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar
   ) {
+    this.refresh();
+  }
+
+  refresh() {
     this.courses$ = this.coursesService.getList()
       .pipe(
         catchError(error => {
@@ -50,10 +57,25 @@ export class CoursesComponent {
   }
 
   onAdd() {
-    this.router.navigate(['new'], {relativeTo: this.route});
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   onEdit(course: Course) {
-    this.router.navigate(['edit', course._id], {relativeTo: this.route});
+    this.router.navigate(['edit', course._id], { relativeTo: this.route });
+  }
+
+  onDelete(course: Course) {
+    this.coursesService.remove(course._id).subscribe({
+      next: (): void => {
+      this.refresh();
+      this.snackbar.open('Curso removido com sucesso!', 'X',
+        {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        });
+      },
+      error: () => this.onError('Erro ao tentar remover o curso')
+    });
   }
 }
