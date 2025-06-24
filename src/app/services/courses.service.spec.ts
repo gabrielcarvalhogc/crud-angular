@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CoursesService } from './courses.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Course } from '../components/courses/model/course';
+import { Course } from '../model/course';
 import { of } from 'rxjs';
 
 describe('CoursesService', () => {

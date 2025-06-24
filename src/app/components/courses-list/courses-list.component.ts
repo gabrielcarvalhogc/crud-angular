@@ -1,4 +1,4 @@
-import { Course } from './../courses/model/course';
+import { Course } from '../../model/course';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Course } from './model/course';
+import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
 import { catchError, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';

@@ -4,7 +4,7 @@ import { CoursesComponent } from './courses.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Course } from './model/course';
+import { Course } from '../../model/course';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;

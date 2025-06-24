@@ -9,7 +9,7 @@ import { CoursesService } from '../../services/courses.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Course } from '../courses/model/course';
+import { Course } from '../../model/course';
 
 @Component({
   selector: 'app-course-form',
@@ -50,6 +50,8 @@ export class CourseFormComponent {
       name: course.name,
       category: course.category
     });
+
+    console.log(course)
   }
 
   openSnackBar(message: string, action: string, config?: { duration?: number }) {

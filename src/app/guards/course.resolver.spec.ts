@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 
 import { courseResolver } from './course.resolver';
 import { Observable } from 'rxjs';
-import { Course } from '../components/courses/model/course';
+import { Course } from '../model/course';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
