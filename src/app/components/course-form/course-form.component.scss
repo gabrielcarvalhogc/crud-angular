@@ -5,6 +5,33 @@ mat-card {
   mat-card-header {
     padding: 1em;
   }
+
+  mat-card-content {
+
+    mat-toolbar {
+      margin: 1em 0;
+    }
+
+    .lessons {
+      .lesson-container {
+        display: flex;
+        justify-content: space-between;
+
+        .table-lesson-name {
+          width: 60%;
+        }
+
+        .table-lesson-url {
+          width: 30%;
+        }
+
+        .table-lesson-delete {
+          position: relative;
+          top: 8px;
+        }
+      }
+    }
+  }
 }
 
 mat-card-actions {

@@ -22,6 +22,34 @@
         <mat-error>{{errorMessage('category')}}</mat-error>
         }
       </mat-form-field>
+
+      <mat-toolbar>
+        <span>Aulas</span>
+        <button mat-icon-button color="primary" (click)="addNewLesson()">
+          <mat-icon aria-label="Adicionar uma nova aula">add</mat-icon>
+        </button>
+      </mat-toolbar>
+
+      <div formArrayName="lessons" class="lessons">
+        @for (lesson of getLessonsFormArray(); track $index) {
+          <div [formGroupName]="$index" class="lesson-container">
+            <mat-form-field class="full-width table-lesson-name">
+              <mat-label>Nome da Aula</mat-label>
+              <input matInput formControlName="name">
+            </mat-form-field>
+
+            <mat-form-field class="full-width table-lesson-url">
+              <mat-label>URL</mat-label>
+              <span matPrefix>https://youtu.be/</span>
+              <input matInput formControlName="youtubeUrl">
+            </mat-form-field>
+
+            <button mat-icon-button color="warn" (click)="removeLesson($index)" class="table-lesson-delete">
+              <mat-icon aria-label="Remover aula">delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
     </form>
   </mat-card-content>
 

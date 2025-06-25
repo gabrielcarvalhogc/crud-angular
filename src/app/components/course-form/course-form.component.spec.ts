@@ -117,5 +117,29 @@ describe('CourseFormComponent', () => {
     expect(snackSpy).toHaveBeenCalledWith('Curso salvo com sucesso', '', { duration: 3000 });
     expect(backSpy).toHaveBeenCalled();
   });
+
+  it('should create lessons form array with initial values', () => {
+    const lessons = component.getLessonsFormArray();
+    expect(lessons.length).toBe(1);
+    expect(lessons[0].value).toEqual({ id: '', name: '', youtubeUrl: '' });
+  });
+
+  it('should add a new lesson to the form array', () => {
+    const initialLength = component.getLessonsFormArray().length;
+    component.addNewLesson();
+    const newLength = component.getLessonsFormArray().length;
+
+    expect(newLength).toBe(initialLength + 1);
+    expect(component.getLessonsFormArray()[newLength - 1].value).toEqual({ id: '', name: '', youtubeUrl: '' });
+  });
+
+  it('should remove a lesson from the form array', () => {
+    component.addNewLesson();
+    const initialLength = component.getLessonsFormArray().length;
+    component.removeLesson(0);
+    const newLength = component.getLessonsFormArray().length;
+
+    expect(newLength).toBe(initialLength - 1);
+  });
 });
 

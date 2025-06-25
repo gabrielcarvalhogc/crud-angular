@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Lesson } from './../../model/lesson';
+import { Component, Inject } from '@angular/core';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, UntypedFormArray, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +11,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../model/course';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-form',
@@ -22,40 +25,71 @@ import { Course } from '../../model/course';
     MatButtonModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   templateUrl: './course-form.component.html',
   styleUrl: './course-form.component.scss'
 })
 export class CourseFormComponent {
 
-  private readonly _snackBar = inject(MatSnackBar);
+  //private readonly _snackBar = inject(MatSnackBar);
   form: FormGroup;
 
   constructor(
-    formBuilder: FormBuilder,
+    @Inject(MatSnackBar)
+    private readonly _snackBar: MatSnackBar,
+    private readonly formBuilder: NonNullableFormBuilder,
     private readonly service: CoursesService,
     private readonly location: Location,
     private readonly route: ActivatedRoute
   ) {
-    this.form = formBuilder.group({
-      _id: [''],
-      name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      category: ['', [Validators.required]]
-    });
-
     const course: Course = this.route.snapshot.data['course'];
 
-    this.form.setValue({
-      _id: course._id,
-      name: course.name,
-      category: course.category
+    this.form = formBuilder.group({
+      _id: [course._id],
+      name: [course.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      category: [course.category, [Validators.required]],
+      lessons: this.formBuilder.array(this.retrieveLessons(course))
     });
-
-    console.log(course)
   }
 
   openSnackBar(message: string, action: string, config?: { duration?: number }) {
     this._snackBar.open(message, action, config);
+  }
+
+  private retrieveLessons(course: Course) {
+    const lessons = [];
+    if(course.lessons) {
+      course.lessons.forEach(lesson => {
+        lessons.push(this.createLesson(lesson));
+      });
+    } else {
+      lessons.push(this.createLesson());
+    }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = {id: '', name: '', youtubeUrl: ''}) {
+    return this.formBuilder.group({
+      id: [lesson.id],
+      name: [lesson.name],
+      youtubeUrl: [lesson.youtubeUrl]
+    });
+  }
+
+  getLessonsFormArray() {
+    return (<UntypedFormArray>this.form.get('lessons')).controls;
+  }
+
+  addNewLesson() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.push(this.createLesson());
+  }
+
+  removeLesson(index: number) {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.removeAt(index);
   }
 
   onSubmit() {
