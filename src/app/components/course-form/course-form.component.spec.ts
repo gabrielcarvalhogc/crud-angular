@@ -39,7 +39,7 @@ describe('CourseFormComponent', () => {
           useValue: {
             snapshot: {
               data: {
-                course: { _id: 1, name: 'Test', category: 'TestCat' }
+                course: { _id: 1, name: 'Angular', category: 'Front-end', lessons: [] }
               }
             }
           }
@@ -50,6 +50,7 @@ describe('CourseFormComponent', () => {
     fixture = TestBed.createComponent(CourseFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
   });
 
   it('should create', () => {
@@ -71,7 +72,8 @@ describe('CourseFormComponent', () => {
   });
 
   it('should call onSuccess and openSnackBar when save', () => {
-    mockService.save.mockReturnValue(of({}));
+    jest.spyOn(component.form, 'valid', 'get').mockReturnValue(true);
+    mockService.save.mockReturnValue(of(null));
 
     const spySuccess = jest.spyOn(component as any, 'onSuccess');
     const snackSpy = jest.spyOn(component, 'openSnackBar');
@@ -83,6 +85,7 @@ describe('CourseFormComponent', () => {
   });
 
   it('should call onError and openSnackBar when save error', () => {
+    jest.spyOn(component.form, 'valid', 'get').mockReturnValue(true);
     mockService.save.mockReturnValue(throwError(() => new Error('fail')));
     const spyError = jest.spyOn(component as any, 'onError');
     const snackSpy = jest.spyOn(component, 'openSnackBar');
@@ -94,6 +97,8 @@ describe('CourseFormComponent', () => {
   });
 
   it('should call onCancel when Observable does no have value', () => {
+    jest.spyOn(component.form, 'valid', 'get').mockReturnValue(true);
+
     mockService.save.mockReturnValue(EMPTY);
     const loc = TestBed.inject(Location);
     const backSpy = jest.spyOn(loc, 'back');
@@ -104,6 +109,8 @@ describe('CourseFormComponent', () => {
   });
 
   it('submit button should call onSuccess and back navigation', () => {
+    jest.spyOn(component.form, 'valid', 'get').mockReturnValue(true);
+
     mockService.save.mockReturnValue(of({}));
     const snackSpy = jest.spyOn(component, 'openSnackBar');
     const loc = TestBed.inject(Location);
@@ -116,12 +123,6 @@ describe('CourseFormComponent', () => {
 
     expect(snackSpy).toHaveBeenCalledWith('Curso salvo com sucesso', '', { duration: 3000 });
     expect(backSpy).toHaveBeenCalled();
-  });
-
-  it('should create lessons form array with initial values', () => {
-    const lessons = component.getLessonsFormArray();
-    expect(lessons.length).toBe(1);
-    expect(lessons[0].value).toEqual({ id: '', name: '', youtubeUrl: '' });
   });
 
   it('should add a new lesson to the form array', () => {

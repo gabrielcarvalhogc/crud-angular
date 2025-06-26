@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../model/course';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { FormUtilsService } from '../../shared/form/form-utils.service';
 
 @Component({
   selector: 'app-course-form',
@@ -33,7 +34,6 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CourseFormComponent {
 
-  //private readonly _snackBar = inject(MatSnackBar);
   form: FormGroup;
 
   constructor(
@@ -42,7 +42,8 @@ export class CourseFormComponent {
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly service: CoursesService,
     private readonly location: Location,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    public formUtils: FormUtilsService
   ) {
     const course: Course = this.route.snapshot.data['course'];
 
@@ -50,7 +51,7 @@ export class CourseFormComponent {
       _id: [course._id],
       name: [course.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       category: [course.category, [Validators.required]],
-      lessons: this.formBuilder.array(this.retrieveLessons(course))
+      lessons: this.formBuilder.array(this.retrieveLessons(course), Validators.required)
     });
   }
 
@@ -73,8 +74,8 @@ export class CourseFormComponent {
   private createLesson(lesson: Lesson = {id: '', name: '', youtubeUrl: ''}) {
     return this.formBuilder.group({
       id: [lesson.id],
-      name: [lesson.name],
-      youtubeUrl: [lesson.youtubeUrl]
+      name: [lesson.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      youtubeUrl: [lesson.youtubeUrl, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
     });
   }
 
@@ -93,12 +94,16 @@ export class CourseFormComponent {
   }
 
   onSubmit() {
-    this.service.save(this.form.value)
-      .subscribe({
-        next: () => this.onSuccess(),
-        error: () => this.onError(),
-        complete: () => this.onCancel()
-      });
+    if (this.form.valid) {
+      this.service.save(this.form.value)
+        .subscribe({
+          next: () => this.onSuccess(),
+          error: () => this.onError(),
+          complete: () => this.onCancel()
+        });
+    } else {
+      this.formUtils.validadeAllFormFields(this.form);
+    }
   }
 
   onCancel() {
@@ -111,25 +116,5 @@ export class CourseFormComponent {
 
   private onError() {
     this.openSnackBar('Erro ao salvar o curso', 'Fechar');
-  }
-
-  errorMessage(fieldName: string) {
-    const field = this.form.get(fieldName);
-
-    if (field?.hasError('required')) {
-      return 'Campo obrigatório';
-    }
-
-    if (field?.hasError('minlength')) {
-      const requiredLength = field.errors ? field.errors['minlength']['requiredLength'] : 5;
-      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
-    }
-
-    if (field?.hasError('maxlength')) {
-      const requiredLength = field.errors ? field.errors['maxlength']['requiredLength'] : 5;
-      return `Tamanho máximo precisa ser de ${requiredLength} caracteres.`;
-    }
-
-    return 'Campo inválido';
   }
 }
