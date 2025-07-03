@@ -1,6 +1,7 @@
 mat-card {
   padding: 16px;
   min-width: 300px;
+  height: calc(100vh - 60px);
 }
 
 .loading-spinner {
