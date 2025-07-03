@@ -1,27 +1,61 @@
-# CrudAngular
+# New Courses Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+Uma aplicação frontend em **Angular 18** para consumo da API de Cursos (backend Spring Boot), com foco em boas práticas de mercado, arquitetura limpa e experiência do usuário.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📋 Visão Geral do Projeto
 
-## Code scaffolding
+- **Objetivo**: Fornecer uma interface web para criar, listar, editar e remover cursos, consumindo a API REST do projeto “New Courses Spring”.  
+- **Principais diferenciais**:  
+  - Uso de **Standalone Components** e **Typed Forms** (FormBuilder / Reactive Forms)  
+  - Validações de formulário em tempo real (`Validators.required`, `Validators.minLength`, etc.)  
+  - Serviços Angular (`HttpClient`) desacoplados com tratamento de erros centralizado  
+  - Design responsivo com SCSS 
+  - Camadas bem definidas: componentes, serviços, models, interceptors, guards  
+  - **Testes unitários** e de componente com **Jest**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🚀 Tecnologias e Ferramentas
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+| Camada                 | Ferramenta / Biblioteca                         |
+|------------------------|-------------------------------------------------|
+| Framework              | Angular 18 (Standalone API)                     |
+| Language               | TypeScript                                     |
+| HTTP Client            | `@angular/common/http` (HttpClient)             |
+| State & DI             | Services + RxJS (`Observables`, `Subjects`)     |
+| Formulários            | `@angular/forms` (Reactive Forms)               |
+| Validação              | `Validators`, mensagens personalizadas          |
+| Testes                 | Jest, ts-jest         |
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## ⚙️ Funcionalidades Principais
 
-## Running end-to-end tests
+1. **Listagem de Cursos**  
+   - Paginação e ordenação  
+   - Filtro de busca por nome ou categoria  
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. **Formulários de Criação e Edição**  
+   - Campos com validações (required, tamanho mínimo, pattern)  
+   - Feedback instantâneo de erros  
 
-## Further help
+3. **Detalhes do Curso**  
+   - Página dedicada exibe dados completos  
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+4. **Exclusão de Curso**  
+   - Diálogo de confirmação antes da remoção  
+
+5. **Tratamento de Erros e Loader**  
+   - Interceptor para capturar erros de rede / API  
+   - Spinner global enquanto carrega dados  
+
+---
+
+## 🛠️ Pré‑requisitos e Setup
+
+1. **Clone** o repositório:  
+   ```bash
+   git clone https://github.com/gabrielcarvalhogc/new-courses-angular.git
+   cd new-courses-angular
