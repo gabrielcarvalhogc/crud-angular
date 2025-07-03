@@ -38,10 +38,10 @@ describe('CoursesService', () => {
   });
 
   describe('should call http.get', () => {
-    it('should call http.get with rigth URL', () => {
+    it('should call http.get with rigth URL and params', () => {
       service.getList();
 
-      expect(httpClientMock.get).toHaveBeenCalledWith(API_URL);
+      expect(httpClientMock.get).toHaveBeenCalledWith(API_URL, { "params": { "page": 0, "pageSize": 10 }});
     });
 
     it('should return courses list ', (done) => {

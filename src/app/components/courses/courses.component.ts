@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
@@ -13,6 +13,8 @@ import { CoursesListComponent } from "../courses-list/courses-list.component";
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { CoursePage } from '../../model/course-page';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-courses',
@@ -24,14 +26,19 @@ import { MatButtonModule } from '@angular/material/button';
     MatProgressSpinnerModule,
     CoursesListComponent,
     MatSnackBarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatPaginatorModule
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
 export class CoursesComponent {
 
-  courses$: Observable<Course[]> | null = null;
+  courses$: Observable<CoursePage> | null = null;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  pageIndex = 0;
+  pageSize = 10;
 
   constructor(
     private readonly coursesService: CoursesService,
@@ -43,12 +50,16 @@ export class CoursesComponent {
     this.refresh();
   }
 
-  refresh() {
-    this.courses$ = this.coursesService.getList()
+  refresh(pageEvent: PageEvent = {length: 0, pageIndex: 0, pageSize: 10} ) {
+    this.courses$ = this.coursesService.getList(pageEvent.pageIndex, pageEvent.pageSize)
       .pipe(
+        tap(() => {
+          this.pageIndex = pageEvent.pageIndex;
+          this.pageSize = pageEvent.pageSize;
+        }),
         catchError(error => {
           this.onError('Erro ao carregar cursos')
-          return of([]);
+          return of({courses: [], totalElements: 0, totalPages: 0});
         })
       )
   }
